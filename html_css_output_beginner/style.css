@@ -1,0 +1,127 @@
+/* 共通設定 */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.section {
+  margin-bottom: 100px;
+  text-align: center;
+  padding: 0 4%;
+}
+
+.section-title {
+  font-size: 2.2em;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 12px;
+  margin-bottom: 60px;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.header .logo {
+  font-size: 1.4em;
+  font-weight: bold;
+  background-color: navy;
+  color: #fff;
+  padding: 4px 12px;
+}
+
+.header nav {
+  display: flex;
+  gap: 20px;
+}
+
+.hero-area .full {
+  width: 100vw;
+  margin: 0 calc(50% - 50vw);
+}
+
+.hero-image {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+.introduce-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.introduce-name {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.introduce-text {
+  margin-bottom: 8px;
+  text-align: start;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.introduce-image {
+  border-radius: 9999px;
+}
+
+.profile-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-box {
+  width: 100%;
+}
+
+.profile-box .profile-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 12px;
+}
+
+.profile-box .profile-text {
+  margin-bottom: 8px;
+}
+
+.profile-box .profile-image {
+  width: 100%;
+}
+
+.footer {
+  margin-top: 20px;
+}
+.footer .footer-text {
+  text-align: center;
+  padding: 8px 0;
+}
+
+/* PC用の設定 */
+@media screen and (min-width: 600px) {
+  .introduce-content {
+    flex-direction: row;
+    text-align: start;
+    padding: 0 40px;
+    justify-content: space-between;
+    gap: 60px;
+  }
+
+  .profile-boxes {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
