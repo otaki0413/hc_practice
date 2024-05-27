@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: python-practice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: .
+        target: /practice
+    tty: true
+    stdin_open: true
