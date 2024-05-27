@@ -5,13 +5,10 @@ members = ["A", "B", "C", "D", "E", "F"]
 # リストをシャッフルする
 random.shuffle(members)
 
-# ランダムに3:3か2:4のリストに分ける
-if random.choice([True, False]):
-    group1 = members[:3]
-    group2 = members[3:]
-else:
-    group1 = members[:2]
-    group2 = members[2:]
+# 2または3をランダムに取得してグループ化する
+number = random.choice([2, 3])
+group1 = members[:number]
+group2 = members[number:]
 
 # 各リストをアルファベット順にソートする
 group1.sort()
