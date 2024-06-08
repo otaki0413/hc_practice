@@ -48,7 +48,7 @@ def main():
         except ValueError:
             sys.exit(f"{int(args[2])} is neither a month number (1..12) nor a name")
 
-        d_today = datetime.date(year=d_today.year, month=int(args[2]), day=1)
+        d_today = datetime.date(year=d_today.year, month=month, day=1)
     else:
         sys.exit("月を指定する場合は、コマンドライン引数を2つ入力してください。\n第1引数は -m 、第2引数は1〜12までの数値です。")
 
@@ -62,9 +62,9 @@ def main():
     # 日付格納用のリスト
     calendar_list = []
 
-    # 最初の週の空白を追加
+    # 最初の週の空白(半角スペース3個分)を追加
     for _ in range(d_first.weekday()):
-        calendar_list.append("   ")
+        calendar_list.append(" "*3)
 
     # 日付を追加（1桁か2桁かで空白を考慮する）
     for day in range(1, d_last.day+1):
