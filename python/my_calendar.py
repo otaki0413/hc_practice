@@ -32,8 +32,8 @@ def get_last_date(year, month):
 # 現在日付(yyyy-mm-dd)
 d_today = datetime.date.today()
 
-# 曜日用のリスト
-day_of_week = ["月", "火", "水", "木", "金", "土", "日"]
+# 曜日表示用のリスト
+days_of_week = ["月", "火", "水", "木", "金", "土", "日"]
 
 # 月初日と月末日
 d_first = get_first_date(d_today.year, d_today.month)
@@ -46,15 +46,17 @@ calendar_list = []
 for _ in range(d_first.weekday()):
     calendar_list.append("   ")
 
-# 日付を追加
+# 日付を追加（1桁か2桁かで空白を考慮する）
 for day in range(1, d_last.day+1):
     if day <= 9:
         calendar_list.append(f" {day} ")
     else:
         calendar_list.append(f"{day} ")
 
+
 # カレンダー出力
 print(f"       {d_today.month}月 {d_today.year}")
-print(" ".join(day_of_week))
+print(" ".join(days_of_week))
+
 for i in range(0, len(calendar_list), 7):
     print("".join(calendar_list[i:i+7]))
