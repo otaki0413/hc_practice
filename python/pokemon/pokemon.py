@@ -1,14 +1,6 @@
 import abc
 
-
-class NameService(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def changeName(self, new_name):
-        pass
-
-    @abc.abstractmethod
-    def getName(self):
-        pass
+from name_service import NameService
 
 
 class Pokemon(NameService, metaclass=abc.ABCMeta):
@@ -32,20 +24,6 @@ class Pokemon(NameService, metaclass=abc.ABCMeta):
         return self.__name
 
 
-class Player(NameService, metaclass=abc.ABCMeta):
-    def __init__(self, name):
-        self.__name = name
-
-    def changeName(self, new_name):
-        if new_name == "うんこ":
-            print("不適切な名前です")
-            return
-        self.__name = new_name
-
-    def getName(self):
-        return self.__name
-
-
 class Pikachu(Pokemon):
     def attack(self):
         print(f"{self.getName()} の10万ボルト!")
@@ -54,22 +32,3 @@ class Pikachu(Pokemon):
 class Zenigame(Pokemon):
     def attack(self):
         print(f"{self.getName()} のみずでっぽう!")
-
-
-def main():
-    pika = Pikachu("ピカチュウ", "でんき", "", 100)
-    pika.attack()
-    pika.changeName("テキセツ")
-    print(pika.getName())
-    pika.changeName("うんこ")
-    print(pika.getName())
-
-    kei = Player("けい")
-    kei.changeName("けい2")
-    print(kei.getName())
-    kei.changeName("うんこ")
-    print(kei.getName())
-
-
-if __name__ == "__main__":
-    main()
