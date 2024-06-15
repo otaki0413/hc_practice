@@ -6,7 +6,7 @@ class Suica:
         if amount >= 100:
             self.__balance += amount
         else:
-            raise ValueError("チャージ金額は100以上でなければいけません。")
+            raise ValueError("チャージ金額は100円以上でなければいけません。")
 
     def pay(self, amount):
         if self.__balance >= amount:
