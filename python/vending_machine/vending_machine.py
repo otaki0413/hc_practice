@@ -1,41 +1,53 @@
 from suica import Suica
+from juice import Juice
 
 
 class VendingMachine:
     def __init__(self):
         self.__stock = {
-            "ペプシ": {"price": 150, "quantity": 5},
-            "モンスター": {"price": 230, "quantity": 5},
-            "いろはす": {"price": 120, "quantity": 5},
+            "ペプシ": [Juice(name="ペプシ", price=150) for _ in range(5)],
+            "モンスター": [Juice(name="モンスター", price=230) for _ in range(5)],
+            "いろはす": [Juice(name="いろはす", price=120) for _ in range(5)],
         }
         self.__sales_amount = 0
 
     def get_stock(self):
-        """在庫を取得する"""
-        return self.__stock
+        """ドリンクの在庫状況を取得する"""
+        stock_info = {}
+
+        for name, juices in self.__stock.items():
+            stock_info[name] = {"price": juices[0].get_price(), "quantity": len(juices)}
+
+        return stock_info
 
     def add_stock(self, name, quantity):
         """在庫を追加する"""
+        # 補充本数のチェック
         if quantity < 1:
             raise ValueError("補充する本数は、1以上の整数値を指定して下さい。")
 
-        if name in self.__stock:
-            self.__stock[name]["quantity"] += quantity
-        else:
+        # 追加対象のドリンクかチェック
+        if name not in self.__stock:
             raise ValueError(
                 f"{name}は追加対象外のドリンクです。ペプシ、モンスター、いろはす から指定して下さい。"
             )
+
+        # 対象ドリンクの値段取得
+        price = self.__stock[name][0].get_price()
+
+        # 既存のリストと、補充本数分のインスタンスを格納したリストを結合
+        self.__stock[name].extend(
+            [Juice(name=name, price=price) for _ in range(quantity)]
+        )
 
     def get_available_drink_list(self, suica: Suica):
         """購入可能なドリンクリストを取得する"""
         available_drink_list = []
 
-        for drink, drink_info in self.__stock.items():
-            if (
-                suica.get_balance() >= drink_info["price"]
-                and drink_info["quantity"] > 0
-            ):
-                available_drink_list.append(drink)
+        for name, juices in self.__stock.items():
+            # チャージ残高の不足と在庫の存在チェック
+            if suica.get_balance() >= juices[0].get_price() and len(juices) > 0:
+                available_drink_list.append(name)
 
         return available_drink_list
 
@@ -47,17 +59,21 @@ class VendingMachine:
                 f"{name}は自動販売機で扱っていません。ペプシ、モンスター、いろはすから選択して下さい。"
             )
 
+        target_drink_list = self.__stock[name]
+
         # 対象ドリンクの在庫チェック
-        juice = self.__stock[name]
-        if juice["quantity"] < 1:
+        if len(target_drink_list) < 1:
             raise ValueError(f"{name}の在庫がありません。")
 
+        # 対象ドリンクの値段取得（在庫が0になると値段が取得できないので、事前に定義しておく）
+        price = target_drink_list[0].get_price()
+
         # Suica支払い処理
-        suica.pay(juice["price"])
+        suica.pay(target_drink_list[0].get_price())
 
         # 在庫・売上の更新処理
-        juice["quantity"] -= 1
-        self.__sales_amount += juice["price"]
+        target_drink_list.pop()
+        self.__sales_amount += price
 
     def get_sales_amount(self):
         """現在の売上金額を取得する"""
@@ -70,7 +86,7 @@ if __name__ == "__main__":
     print(f"Suica残高: {suica1.get_balance()}")
 
     vm = VendingMachine()
-    print(f"在庫: {vm.get_stock()}")
+    print(f"ドリンクの在庫状況: {vm.get_stock()}")
     print(f"購入可能なドリンクリスト: {vm.get_available_drink_list(suica=suica1)}")
 
     # ドリンク購入
@@ -79,8 +95,8 @@ if __name__ == "__main__":
     except ValueError as e:
         print(e)
 
-    print(f"Suica残高: {suica1.get_balance()}")
-    print(f"在庫: {vm.get_stock()}")
+    print(f"ドリンク購入後のSuica残高: {suica1.get_balance()}")
+    print(f"在庫状況: {vm.get_stock()}")
     print(f"売上金額: {vm.get_sales_amount()}")
 
     # 在庫補充（対象ドリンク）
@@ -88,15 +104,15 @@ if __name__ == "__main__":
         vm.add_stock("ペプシ", 5)
     except ValueError as e:
         print(e)
-    print(vm.get_stock())
+    print(f"補充成功時の在庫状況: {vm.get_stock()}")
 
     # 在庫補充（対象外ドリンク）
     try:
         vm.add_stock("ファンタ", 5)
     except ValueError as e:
         print(e)
-    print(vm.get_stock())
+    print(f"補充失敗時の在庫状況: {vm.get_stock()}")
 
     print(f"Suica残高: {suica1.get_balance()}")
-    print(f"在庫: {vm.get_stock()}")
+    print(f"在庫状況: {vm.get_stock()}")
     print(f"売上金額: {vm.get_sales_amount()}")
