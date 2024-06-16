@@ -7,7 +7,19 @@ from vending_machine import VendingMachine
 def main():
     # Suicaの初期設定
     suica1 = Suica()
-    suica1.charge(amount=500)
+    # Suicaチャージ（100円以上の場合）
+    try:
+        suica1.charge(amount=500)
+    except ValueError as e:
+        print(e)
+        sys.exit(1)
+
+    # Suicaチャージ（100円未満の場合）： 処理が止まるのでコメントアウト
+    # try:
+    #     suica1.charge(amount=50)
+    # except ValueError as e:
+    #     print(e)
+    #     sys.exit(1)
 
     # 自動販売機の初期設定
     vm = VendingMachine()
@@ -30,6 +42,7 @@ def main():
         print(e)
         sys.exit(1)
 
+    print("=" * 60)
     print(f"Suica残高: {suica1.get_balance()}")
     print(f"在庫状況: {vm.get_stock()}")
     print(f"売上金額: {vm.get_sales_amount()}")
