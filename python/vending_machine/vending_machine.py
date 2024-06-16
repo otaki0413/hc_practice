@@ -65,7 +65,7 @@ class VendingMachine:
         if len(target_drink_list) < 1:
             raise ValueError(f"{name}の在庫がありません。")
 
-        # 対象ドリンクの値段取得（在庫が0になると値段が取得できないので、事前に定義しておく）
+        # 対象ドリンクの値段取得（在庫が0になると値段が取得できなくなるので、事前取得しておく）
         price = target_drink_list[0].get_price()
 
         # Suica支払い処理
@@ -81,38 +81,4 @@ class VendingMachine:
 
 
 if __name__ == "__main__":
-    suica1 = Suica()
-    suica1.charge(amount=500)
-    print(f"Suica残高: {suica1.get_balance()}")
-
-    vm = VendingMachine()
-    print(f"ドリンクの在庫状況: {vm.get_stock()}")
-    print(f"購入可能なドリンクリスト: {vm.get_available_drink_list(suica=suica1)}")
-
-    # ドリンク購入
-    try:
-        vm.purchase(suica=suica1, name="モンスター")
-    except ValueError as e:
-        print(e)
-
-    print(f"ドリンク購入後のSuica残高: {suica1.get_balance()}")
-    print(f"在庫状況: {vm.get_stock()}")
-    print(f"売上金額: {vm.get_sales_amount()}")
-
-    # 在庫補充（対象ドリンク）
-    try:
-        vm.add_stock("ペプシ", 5)
-    except ValueError as e:
-        print(e)
-    print(f"補充成功時の在庫状況: {vm.get_stock()}")
-
-    # 在庫補充（対象外ドリンク）
-    try:
-        vm.add_stock("ファンタ", 5)
-    except ValueError as e:
-        print(e)
-    print(f"補充失敗時の在庫状況: {vm.get_stock()}")
-
-    print(f"Suica残高: {suica1.get_balance()}")
-    print(f"在庫状況: {vm.get_stock()}")
-    print(f"売上金額: {vm.get_sales_amount()}")
+    pass

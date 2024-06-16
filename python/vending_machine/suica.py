@@ -19,13 +19,4 @@ class Suica:
 
 
 if __name__ == "__main__":
-    suica1 = Suica()
-    suica1.charge(amount=500)
-
-    try:
-        suica1.charge(amount=50)
-    except ValueError as e:
-        print(e)
-
-    balance = suica1.get_balance()
-    print(balance)
+    pass

@@ -13,5 +13,4 @@ class Juice:
 
 
 if __name__ == "__main__":
-    pepci = Juice(name="ペプシ", price=150)
-    print(pepci.get_price())
+    pass
