@@ -20,32 +20,74 @@ const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
 
 // メイン処理
 try {
-  let month;
+  let month; // Dateオブジェクトで扱う月
+  let displayMonth; // カレンダー表示用の月
   const date = new Date();
   const year = date.getFullYear();
-  console.log(`date: ${date}`);
-  console.log(`year: ${year}`);
 
+  // コマンドライン引数の有無に応じた処理
   const args = process.argv;
   if (args.length > 2) {
-    // コマンドライン引数のチェック処理
+    // バリデーション処理
     checkCommandLineArgs(args);
-    // 指定された月取得
+    // 指定した月を取得
     const monthArg = String(args[3]);
     month = monthMap.get(monthArg);
+    displayMonth = monthArg;
   } else {
     // 引数を指定しない場合、今月を取得
     month = date.getMonth();
+    displayMonth = month + 1;
   }
 
-  // 月初日と月末日の取得
+  // 月初日と月末日
   const firstDate = getFirstDate(year, month);
   const lastDate = getLastDate(year, month);
-  console.log(`月初日: ${firstDate}`);
-  console.log(`月末日: ${lastDate}`);
+  // 月の日数
+  const dateCount = lastDate.getDate();
+  // 月初日の曜日番号
+  const firstDayNumber = firstDate.getDay();
+
+  // 月初日までの空白（半角スペース2個分）が格納された配列
+  const halfSpaceArr = new Array(firstDayNumber).fill("  ");
+
+  // 日付が格納された配列
+  const dateArr = Array.from({ length: dateCount }, (_, i) => i + 1);
+  // フォーマットをかけた配列（1桁の日付の場合、前方に半角スペース付与）
+  const fmtDateArr = dateArr.map((date, _) =>
+    date < 10 ? " " + date.toString() : date.toString()
+  );
+
+  // 空白と日付を結合した配列
+  const calDataArr = [...halfSpaceArr, ...fmtDateArr];
+
+  // 1週間ごとに分割した配列を格納した多次元配列
+  const nestCalDataArr = calDataArr.reduce((acc, date, i) => {
+    if (i % 7 === 0) acc.push([]);
+    acc[acc.length - 1].push(date);
+    return acc;
+  }, []);
+
+  // カレンダー表示
+  displayCalendar(year, displayMonth, nestCalDataArr);
 } catch (err) {
   console.error(err);
   process.exit(1);
+}
+
+/**
+ * カレンダーを表示する
+ * @param {number} year 年
+ * @param {number} month 月（0~11）
+ * @param {Array<Array<string>>} calDataArr 1週間ごとの日付配列を格納した多次元配列
+ */
+function displayCalendar(year, month, calDataArr) {
+  // ヘッダー部分
+  console.log(`     ${month}月 ${year}`);
+  // 曜日部分
+  console.log(dayOfWeek.join(" "));
+  // 日付部分
+  calDataArr.forEach((line) => console.log(line.join(" ")));
 }
 
 /**
@@ -73,6 +115,15 @@ function getLastDate(year, month) {
   // 翌月の月初日から1日引く
   targetDate.setDate(0);
   return targetDate;
+}
+
+/**
+ * 指定した月の日数を取得する
+ * @param {number} year 年
+ * @param {number} month 月 (0~11)
+ */
+function getDateCount(year, month) {
+  return new Date(year, month, 0);
 }
 
 /**
