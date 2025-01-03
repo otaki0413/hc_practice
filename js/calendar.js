@@ -118,15 +118,6 @@ function getLastDate(year, month) {
 }
 
 /**
- * 指定した月の日数を取得する
- * @param {number} year 年
- * @param {number} month 月 (0~11)
- */
-function getDateCount(year, month) {
-  return new Date(year, month, 0);
-}
-
-/**
  * コマンドライン引数をチェックする
  * @param {Array} args コマンドライン引数が格納された配列
  */
