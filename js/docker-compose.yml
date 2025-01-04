@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: js-practice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: .
+        target: /work
+    tty: true
+    stdin_open: true
