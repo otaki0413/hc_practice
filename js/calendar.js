@@ -52,14 +52,12 @@ try {
   const halfSpaceArr = new Array(firstDayNumber).fill("  ");
 
   // 日付が格納された配列
-  const dateArr = Array.from({ length: dateCount }, (_, i) => i + 1);
-  // フォーマットをかけた配列（1桁の日付の場合、前方に半角スペース付与）
-  const fmtDateArr = dateArr.map((date, _) =>
-    date < 10 ? " " + date.toString() : date.toString()
+  const dateArr = Array.from({ length: dateCount }, (_, i) =>
+    (i + 1).toString().padStart(2)
   );
 
   // 空白と日付を結合した配列
-  const calDataArr = [...halfSpaceArr, ...fmtDateArr];
+  const calDataArr = [...halfSpaceArr, ...dateArr];
 
   // 1週間ごとに分割した配列を格納した多次元配列
   const nestCalDataArr = calDataArr.reduce((acc, date, i) => {
