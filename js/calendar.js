@@ -59,7 +59,7 @@ try {
   // 空白と日付を結合した配列
   const calDataArr = [...halfSpaceArr, ...dateArr];
 
-  // 1週間ごとに分割した配列を格納した多次元配列
+  // 1週間ごとに分割した配列を格納した2次元配列
   const nestCalDataArr = calDataArr.reduce((acc, date, i) => {
     if (i % 7 === 0) acc.push([]);
     acc[acc.length - 1].push(date);
@@ -77,7 +77,7 @@ try {
  * カレンダーを表示する
  * @param {number} year 年
  * @param {number} month 月（0~11）
- * @param {Array<Array<string>>} calDataArr 1週間ごとの日付配列を格納した多次元配列
+ * @param {Array<Array<string>>} calDataArr 1週間ごとの日付配列を格納した2次元配列
  */
 function displayCalendar(year, month, calDataArr) {
   // ヘッダー部分
@@ -92,7 +92,7 @@ function displayCalendar(year, month, calDataArr) {
  * 月初日を取得する
  * @param {number} year 年
  * @param {number} month 月（0~11）
- * @returns 月初日
+ * @returns {Date} 月初日
  */
 function getFirstDate(year, month) {
   return new Date(year, month, 1);
@@ -102,7 +102,7 @@ function getFirstDate(year, month) {
  * 月末日を取得する
  * @param {number} year 年
  * @param {number} month 月 (0~11)
- * @returns 月末日
+ * @returns {Date} 月末日
  */
 function getLastDate(year, month) {
   // 翌月の月初日を取得
